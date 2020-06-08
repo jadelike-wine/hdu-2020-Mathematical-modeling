@@ -1,0 +1,36 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+import math
+
+import sympy as sy
+
+#自定义函数 e指数形式
+def func(x, r,p,y0):
+    return r*y0*math.e**(r*x)
+#定义x、y散点坐标
+x=[1,2,3,4,5,6,7,8,9,10,11,12,13]
+y=[0,4,17,59,77,149,571,259,444,688,769,1771,1459]
+x = np.array(x)
+y = np.array(y)
+#非线性最小二乘法拟合
+popt, pcov = curve_fit(func, x, y)
+#获取popt里面是拟合系数
+print(popt)
+r = popt[0]
+p = popt[1]
+y0 = popt[2]
+yvals = func(x,r,p,y0) #拟合y值
+print('popt:', popt)
+print('系数r:', r)
+print('系数p:', p)
+print('系数y0:', y0)
+
+#绘图
+plot1 = plt.plot(x, y, 's',label='original values')
+plot2 = plt.plot(x, yvals, 'r',label='polyfit values')
+plt.xlabel('x')
+plt.ylabel('y')
+plt.legend(loc=4) #指定legend的位置右下角
+plt.title('curve_fit')
+plt.show()
